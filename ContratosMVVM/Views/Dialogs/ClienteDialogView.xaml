@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="ContratosMVVM.Views.Dialogs.ClienteDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ContratosMVVM.Views.Dialogs"
+
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:dialogViewModels="clr-namespace:ContratosMVVM.ViewModels.DialogViewModels"
+             xmlns:controls="clr-namespace:ContratosMVVM.Controls"
+             xmlns:converters="clr-namespace:ContratosMVVM.Converters"
+             mc:Ignorable="d"  Height="550" Width="800" d:DataContext="{d:DesignInstance  dialogViewModels:ClienteDialogViewModel}"
+             Language="pt-BR">
+    <UserControl.Resources>
+        <converters:EmptyIfZeroConverter x:Key="emptyIfZero"/>
+    </UserControl.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--<TextBlock Text="NOME: " FontWeight="Black" FontSize="22" TextAlignment="Right"/>-->
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="6" FontSize="20" FontWeight="DemiBold" TextAlignment="Left" Margin="5" Text="{Binding ClienteSelecionado.RazãoSocial}"/>
+            <TextBlock Grid.Row="0" FontStyle="Italic" FontSize="18" Text="CNPJ/CPF" TextAlignment="Right" Margin="5" Grid.Column="6"/>
+            <TextBlock Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" FontStyle="Italic" FontSize="18"  TextAlignment="Left" Margin="5" Text="{Binding ClienteSelecionado.CNPJCPF}"/>
+            <TextBox Grid.Row="1" Grid.ColumnSpan="3" Margin="7.5" Grid.RowSpan="3" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding ClienteSelecionado.Observacao.Texto, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"></TextBox>
+            <Button Grid.Row="4" Grid.Column="1" Content="Salvar Obs." Margin="7.5" Command="{Binding SaveObservacao}"></Button>
+            <TextBlock Grid.Row="1" Text="ENDEREÇO" FontSize="15" FontWeight="DemiBold" TextAlignment="Right" Margin="5" Grid.Column="4"/>
+            <TextBlock Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="3" FontSize="15" FontWeight="Normal" Text="{Binding ClienteSelecionado.Endereço}"  TextAlignment="Left" Margin="5"/>
+            <TextBlock Grid.Row="2" Grid.Column="4" FontSize="15" FontWeight="DemiBold" Text="BAIRRO:" TextAlignment="Right" Margin="5"/>
+            <TextBlock Grid.Row="2" Grid.Column="5" FontSize="15" FontWeight="Normal" Text="{Binding ClienteSelecionado.Bairro}" TextAlignment="Left" Margin="5" Grid.ColumnSpan="2"/>
+            <TextBlock Grid.Row="3" FontSize="15" FontWeight="DemiBold" Text="CIDADE:"  TextAlignment="Right" Margin="5" Grid.Column="4"/>
+            <TextBlock Grid.Row="3" Grid.Column="5" FontSize="15" Text="{Binding ClienteSelecionado.Cidade}"  TextAlignment="Left" Margin="5" Grid.ColumnSpan="2"></TextBlock>
+            <TextBlock Grid.Row="3" Grid.Column="7" FontSize="15" FontWeight="DemiBold" Text="ESTADO:" TextAlignment="Right" Margin="5"/>
+            <TextBlock Grid.Row="3" Grid.Column="8" FontSize="15" Text="{Binding ClienteSelecionado.Estado}"  TextAlignment="Left" Margin="5"></TextBlock>
+            <TextBlock Grid.Row="5" FontSize="15" FontWeight="DemiBold" Text="TELEFONE:"  TextAlignment="Right" Margin="5" Grid.Column="4"/>
+            <TextBlock Grid.Row="4" Grid.Column="5" FontSize="15" Text="{Binding ClienteSelecionado.Telefone}"  TextAlignment="Left" Margin="5" Grid.ColumnSpan="2"></TextBlock>
+            <TextBlock Visibility="Collapsed" Grid.Row="4" Grid.Column="6" FontSize="15" FontWeight="DemiBold" Text="E-MAIL:" TextAlignment="Right" Margin="5"/>
+            <TextBlock Visibility="Collapsed" Grid.Row="4" Grid.Column="7" FontSize="15" Grid.ColumnSpan="2" Text="{Binding ClienteSelecionado.Email}"  TextAlignment="Left" Margin="5"></TextBlock>
+            <Border Visibility="Hidden" Grid.Column="5" CornerRadius="10" Background="#EEEEEE" Padding="10">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding Adicionar}"></MouseBinding>
+                </Border.InputBindings>
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.4"></DropShadowEffect>
+                </Border.Effect>
+                <TextBlock VerticalAlignment="Center"><Run Text="➕" FontSize="14"/><Run Text="  Adicionar" FontSize="16"/></TextBlock>
+            </Border>
+        </Grid>
+        <Separator Grid.Row="1"/>
+        <Border Grid.Row="2" Background="#EEEEEE" Margin="15" CornerRadius="10" Visibility="{Binding PainelAberto}">
+            <Border.Effect>
+                <DropShadowEffect Opacity="0.4"/>
+            </Border.Effect>
+            <Grid Margin="10, 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Tipo de Contrato" Margin="15, 5" FontSize="14"/>
+                <ComboBox Grid.Row="1" Margin="15, 5" FontSize="14" DisplayMemberPath="Nome" SelectedValuePath="Id" SelectedValue="{Binding ContratoSelecionado.ContratoBaseId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TiposDeContratoList}"/>
+                <TextBlock Grid.Column="1" Text="Valor Unit." Margin="15, 5" FontSize="14"/>
+                <controls:CurrencyBox Grid.Row="1" Grid.Column="1" Margin="15, 5" FontSize="14" Value="{Binding ValorUnitário, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <TextBlock Grid.Column="2" Text="Qtd." Margin="5" FontSize="14"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Margin="5, 5" FontSize="14" Text="{Binding Quantidade, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=N0, Converter={StaticResource emptyIfZero}}"/>
+                <TextBlock Grid.Column="3" Text="Tot. do Contr." Margin="15,5" FontSize="14"/>
+                <TextBlock Grid.Row="1" Grid.Column="3" Margin="15, 5" FontSize="14" Text="{Binding ValorTotalDoContrato, Mode=OneWay, StringFormat=C2}"/>
+                <TextBlock Grid.Column="4" Text="Vigência" Margin="10,5" FontSize="14"/>
+                <TextBox Grid.Row="1" Grid.Column="4" Margin="10, 5" FontSize="14" Text="{Binding Vigência, Converter={StaticResource emptyIfZero}, ConverterParameter=D}"/>
+                <Button Grid.Column="5" Grid.RowSpan="2" Margin="5" Content="Salvar" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20,10" FontSize="14" Command="{Binding SalvaContratoSelecionado}"/>
+            </Grid>
+        </Border>
+        <!--<Expander Grid.Row="4" Grid.RowSpan="2"></Expander>-->
+        <DataGrid Grid.Row="4" AutoGenerateColumns="False" EnableRowVirtualization="True"  ItemsSource="{Binding Contratos}" RowDetailsVisibilityMode="VisibleWhenSelected"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  FontSize="15"
+                  CanUserReorderColumns="False"
+                  HorizontalGridLinesBrush="Gray"
+                  VerticalGridLinesBrush="LightGray" Margin="10,0" SelectedItem="{Binding ContratoSelecionado,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Delete" Command="{Binding RemoveContratoSelecionado}"/>
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tipo de Contrato" Width="*" Binding="{Binding ContratoBase.Nome  }"/>
+                <DataGridTextColumn Header="Valor Unit." Width="95" Binding="{Binding ValorUnitário, StringFormat=C2}"/>
+                <DataGridTextColumn Header="Qtd." Width="70" Binding="{Binding Quantidade, StringFormat=N0}"/>
+                <DataGridTextColumn Header="Tot. do Contr." Width="110" Binding="{Binding ValorTotalDoContrato, StringFormat=C2}"/>
+                <DataGridTextColumn Header="Vigência" Binding="{Binding Vigência}" Width="Auto"/>
+                <!--<DataGridTemplateColumn Width="*" Header="Ações">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                -->
+                <!--<Button Content="📝" Margin="5" Command="{Binding EditaSelecionado}"/>-->
+                <!--<Button Content="🗑" Margin="5" Command="{Binding }"/>-->
+                <!--
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Grid.Row="5" HorizontalAlignment="Right" FontSize="15"><Run Text="Valor Total dos Contratos: " FontWeight="Bold"/><Run Text="{Binding ValorTotalDosContratos, StringFormat=C2, ConverterCulture='pt-BR', Mode=OneWay}"/></TextBlock>
+        <Separator Grid.Row="6"/>
+        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Gerar Contas a Receber" Width="Auto" HorizontalAlignment="Center" Margin="0,0,10,0" FontSize="14" FontWeight="DemiBold" Command="{Binding GerarContasAReceber}"/>
+            <Button Content="Gera Arquivo Word" Width="Auto" HorizontalAlignment="Center" Margin="10,0,10,0" FontSize="14" FontWeight="DemiBold" Command="{Binding ImprimeWordDocumento}"/>
+            <Button Content="Salva Contrato Assinado" Width="Auto" HorizontalAlignment="Center" Margin="10, 0,0,0" FontSize="14" FontWeight="DemiBold" Command="{Binding CarregaArquivoPDF}"/>
+        </StackPanel>
+    </Grid>
+
+</UserControl>

@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="ContratosMVVM.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ContratosMVVM.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:viewModels="clr-namespace:ContratosMVVM.ViewModels"
+             mc:Ignorable="d" d:DesignHeight="650" d:DesignWidth="940" d:DataContext="{d:DesignInstance viewModels:HomeViewModel }">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="175"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0" Width="165"   IsEnabled="False"
+                      VerticalContentAlignment="Center" FontSize="16" BorderThickness="1" ItemsSource="{Binding FiltrosDePesquisa}" FontFamily="Segoe UI" Background="White" VerticalAlignment="Center" >
+            </ComboBox>
+            <TextBox CharacterCasing="Upper" Grid.Column="1" Margin="10,0" Text="{Binding CampoDePesquisa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding Pesquisar}"></KeyBinding>
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Grid.Column="2" Margin="5,0" Padding="5,0" Content="Pesquisar" HorizontalAlignment="Center" Command="{Binding Pesquisar}"/>
+            <Border Background="Gray" Width="1" Grid.Column="3"/>
+            <Button Grid.Column="4" IsEnabled="False" Margin="5,0" Padding="5,0" Content="Gerar Mensalidades" HorizontalAlignment="Center" Command="{Binding GerarMensalidades}"/>
+            <Border Background="Gray" Width="1" Grid.Column="5"/>
+            <Button Visibility="Visible" Grid.Column="6" Margin="5,0" Padding="5,0" Content="Contratos" HorizontalAlignment="Center" Command="{Binding EditarContratos}" />
+        </Grid>
+        <DataGrid AutoGenerateColumns="False" 
+                  EnableRowVirtualization="True" 
+                  ItemsSource="{Binding ClientesList}" 
+                  SelectedItem="{Binding ClienteSelecionado}"
+                  Margin="10" 
+                  Grid.Row="1" 
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  FontSize="15"
+                  CanUserReorderColumns="False">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding EditaSelecionado, UpdateSourceTrigger=PropertyChanged}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="rCNPJColumn" Binding="{Binding CNPJCPF}" Header="CNPJCPF" Width="140"/>
+                <DataGridTextColumn x:Name="rNOMEColumn" Binding="{Binding RazãoSocial}" Header="RAZÃO SOCIAL" Width="2*"/>
+                <!--<DataGridTextColumn x:Name="rNOME_FANTAColumn" Binding="{Binding NomeFantasia}" Header="NOME FANTASIA" Width="2*"/>-->
+                <DataGridTextColumn x:Name="rTEL_RESIDColumn" Binding="{Binding Telefone}" Header="TELEFONE" Width="120"/>
+                <DataGridTemplateColumn Header="CONTRATO" Width="0.4*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Contrato" Margin="5" IsEnabled="{Binding HasContrato}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                                              Path=DataContext.VisualizaPDF}"
+                                        />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

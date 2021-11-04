@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="ContratosMVVM.Views.Dialogs.GeraContasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ContratosMVVM.Views.Dialogs"
+             xmlns:viewModels="clr-namespace:ContratosMVVM.ViewModels"
+             xmlns:dialogViewModels="clr-namespace:ContratosMVVM.ViewModels.DialogViewModels"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance dialogViewModels:GeraContasViewModel}"
+             FontSize="20" FontWeight="SemiBold">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Center" Margin="0,0, 0, 5">
+            <TextBlock TextAlignment="Center"><Run Text="Gerando Mensalidades para:"/><LineBreak/><Run Text="{Binding NomeCliente, Mode=OneWay}"/></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+            <Label Content="Mês" Margin="0,0,5,0"/>
+            <TextBox VerticalAlignment="Center" Width="100" Margin="5,0,20,0" Text="{Binding Mes}"/>
+            <Label Content="Ano" Margin="20,0,5,0"/>
+            <TextBox VerticalAlignment="Center" MaxLength="2" Width="100" Margin="5,0,0,0" Text="{Binding Ano}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+            <Label Content="Dia para Vencimento" Margin="20,0,5,0"/>
+            <TextBox VerticalAlignment="Center" Width="100" Margin="5,0,0,0" Text="{Binding DiaVencimento}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+            <Button Content="Gerar Contas a Receber" VerticalAlignment="Center" Command="{Binding GerarContasAReceber}"/>
+        </StackPanel>
+    </Grid>
+
+</UserControl>
