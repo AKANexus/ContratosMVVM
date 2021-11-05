@@ -2,7 +2,7 @@
 
 ## Sobre
 
-Um software simples, em WPF, que obtém informações de clientes a partir de uma base Firebird 2.5, e permite a criação de arquivos *.docx modulares de acordo com informações previamente cadastradas.
+Um aplicativo que obtém informações de clientes a partir de uma base Firebird 2.5, e permite a criação de arquivos *.docx modulares de acordo com informações previamente cadastradas.
 
 ## Tecnologias
 
