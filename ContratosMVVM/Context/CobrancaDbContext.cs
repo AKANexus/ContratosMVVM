@@ -21,6 +21,7 @@ namespace ContratosMVVM.Context
 
         }
 
+        public DbSet<CLIENTE> Clientes { get; set; }
         public DbSet<CONTRATO_BASE> ContratoBases { get; set; }
         public DbSet<SETOR> Setors { get; set; }
         public DbSet<CONTRATO> Contratos { get; set; }

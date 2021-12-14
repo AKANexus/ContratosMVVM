@@ -6,16 +6,27 @@
              xmlns:local="clr-namespace:ContratosMVVM.Views"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:viewModels="clr-namespace:ContratosMVVM.ViewModels"
+             IsHitTestVisible="{Binding HitTestVisible}"
              mc:Ignorable="d" d:DesignHeight="650" d:DesignWidth="940" d:DataContext="{d:DesignInstance viewModels:HomeViewModel }">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Canvas x:Name="Overlay" Background="#33000000" ZIndex="1" Grid.RowSpan="2" Margin="15" Visibility="{Binding CanvasVisibility}">
+            <Grid Width="{Binding ActualWidth, ElementName=Overlay}" Height="{Binding ActualHeight, ElementName=Overlay}">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3">
+                    <TextBlock Text="{Binding TABELATextBlock}"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding ENTRADATextBlock}"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36"/>
+                </StackPanel>
+            </Grid>
+        </Canvas>
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="175"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="3"/>
                 <ColumnDefinition Width="Auto"/>
@@ -35,6 +46,8 @@
             <Button Grid.Column="4" IsEnabled="False" Margin="5,0" Padding="5,0" Content="Gerar Mensalidades" HorizontalAlignment="Center" Command="{Binding GerarMensalidades}"/>
             <Border Background="Gray" Width="1" Grid.Column="5"/>
             <Button Visibility="Visible" Grid.Column="6" Margin="5,0" Padding="5,0" Content="Contratos" HorizontalAlignment="Center" Command="{Binding EditarContratos}" />
+            <Border Background="Gray" Width="1" Grid.Column="7"/>
+            <Button Visibility="Visible" Grid.Column="8" Margin="5,0" Padding="5,0" Content="Sincr." HorizontalAlignment="Center" Command="{Binding SincronizarComBling}" />
         </Grid>
         <DataGrid AutoGenerateColumns="False" 
                   EnableRowVirtualization="True" 

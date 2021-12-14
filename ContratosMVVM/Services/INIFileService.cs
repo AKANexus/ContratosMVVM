@@ -4,7 +4,10 @@ using System.IO;
 
 namespace ContratosMVVM.Services
 {
-    public enum INIConfig { MySQLIP, BaseClipp };
+    public enum INIConfig { MySQLIP, BaseClipp,
+        APIKey,
+        NumLoja
+    };
     public class INIFileService
     {
         private readonly Dictionary<INIConfig, string> _defaultValues = new();
