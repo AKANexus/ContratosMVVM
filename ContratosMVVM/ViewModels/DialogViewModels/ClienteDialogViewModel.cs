@@ -152,10 +152,10 @@ namespace ContratosMVVM.ViewModels.DialogViewModels
             OnPropertyChanged(nameof(ValorTotalDosContratos));
             try
             {
-                ClienteSelecionado.Observacao =
-                    await _observacaoDataService.GetAsNoTrackingByFirebirdId(ClienteSelecionado.IDFirebird);
-                if (ClienteSelecionado.Observacao is null) ClienteSelecionado.Observacao = new();
-                OnPropertyChanged(nameof(ClienteSelecionado.Observacao.Texto));
+                //ClienteSelecionado.Observacao =
+                //    await _observacaoDataService.GetAsNoTrackingByFirebirdId(ClienteSelecionado.IDFirebird);
+                //if (ClienteSelecionado.Observacao is null) ClienteSelecionado.Observacao = new();
+                //OnPropertyChanged(nameof(ClienteSelecionado.Observacao.Texto));
             }
             catch (Exception e)
             {
@@ -178,20 +178,20 @@ namespace ContratosMVVM.ViewModels.DialogViewModels
 
         protected override async Task ExecuteAsync(object parameter)
         {
-            if (_clienteDialogViewModel.ClienteSelecionado.Observacao.FirebirdId == 0)
-            {
-                _clienteDialogViewModel.ClienteSelecionado.Observacao.FirebirdId =
-                    _clienteDialogViewModel.ClienteSelecionado.IDFirebird;
-                await _observacaoDataService.Create(_clienteDialogViewModel.ClienteSelecionado.Observacao);
-            }
-            else
-            {
-                await _observacaoDataService.Update(_clienteDialogViewModel.ClienteSelecionado.Observacao.Id,
-                    _clienteDialogViewModel.ClienteSelecionado.Observacao);
+            //if (_clienteDialogViewModel.ClienteSelecionado.Observacao.FirebirdId == 0)
+            //{
+            //    _clienteDialogViewModel.ClienteSelecionado.Observacao.FirebirdId =
+            //        _clienteDialogViewModel.ClienteSelecionado.IDFirebird;
+            //    await _observacaoDataService.Create(_clienteDialogViewModel.ClienteSelecionado.Observacao);
+            //}
+            //else
+            //{
+            //    await _observacaoDataService.Update(_clienteDialogViewModel.ClienteSelecionado.Observacao.Id,
+            //        _clienteDialogViewModel.ClienteSelecionado.Observacao);
 
-            }
+            //}
 
-            MessageBox.Show("Observações salvas com sucesso!");
+            MessageBox.Show("Observações desativadas!");
         }
     }
 

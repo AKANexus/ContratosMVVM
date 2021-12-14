@@ -21,8 +21,9 @@ namespace ContratosMVVM.HostBuilders
                 serviços.AddSingleton<SetorDataService>();
                 serviços.AddSingleton<INIFileService>();
                 serviços.AddSingleton<ContratoDocService>();
-                serviços.AddSingleton<ObservacaoDataService>()
-                    ;
+                serviços.AddSingleton<ObservacaoDataService>();
+                serviços.AddSingleton<ContatoDataService>();
+                serviços.AddSingleton<BlingAPIService>();
             });
             return host;
         }

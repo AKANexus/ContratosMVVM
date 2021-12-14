@@ -12,17 +12,19 @@ namespace ContratosMVVM.Domain
     {
         public string CNPJCPF { get; set; }
         public string RazãoSocial { get; set; }
+
+        public int BlingID { get; set; }
         public string Telefone { get; set; }
         public string Endereço { get; set; }
         public string CEP { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
         public string Bairro { get; set; }
-        public string Email { get; set; }
+        //public string Email { get; set; }
         public string Representante { get; set; }
         public string CPFDoRepresentante { get; set; }
         public int DataMelhorVencimento { get; set; }
-        public OBSERVACAO Observacao { get; set; }
+        //public OBSERVACAO Observacao { get; set; }
         public int IDFirebird { get; set; }
 
         public List<CONTRATO> Contratos { get; set; }
