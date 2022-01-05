@@ -29,6 +29,10 @@ namespace ContratosMVVM.ViewModels
         private INIFileService _iniFileService;
         private readonly ContatoDataService _clienteDataService;
         private readonly Progress<ProgressReport> progressIndicator = new();
+        private Visibility _canvasVisibility = Visibility.Collapsed;
+        private bool _hitTestVisible = true;
+        private string _tabelaTextBlock;
+        private string _entradaTextBlock;
 
         public ICommand Pesquisar { get; set; }
         public ICommand GerarMensalidades { get; set; }
@@ -48,19 +52,36 @@ namespace ContratosMVVM.ViewModels
         public CLIENTE ClienteSelecionado
         {
             get => _clienteStore?.Cliente;
-            set => _clienteStore.Cliente = value;
+            set { _clienteStore.Cliente = value; OnPropertyChanged(nameof(ClienteSelecionado)); }
         }
 
         public ICommand EditarContratos { get; set; }
         public ICommand VisualizaPDF { get; set; }
         public ICommand SincronizarComBling { get; set; }
 
-        public string TABELATextBlock { get; set; }
-        public string ENTRADATextBlock { get; set; }
+        public string TABELATextBlock
+        {
+            get => _tabelaTextBlock;
+            set { _tabelaTextBlock = value; OnPropertyChanged(nameof(TABELATextBlock)); }
+        }
 
-        public Visibility CanvasVisibility { get; set; } = Visibility.Collapsed;
+        public string ENTRADATextBlock
+        {
+            get => _entradaTextBlock;
+            set { _entradaTextBlock = value; OnPropertyChanged(nameof(ENTRADATextBlock)); }
+        }
 
-        public bool HitTestVisible { get; set; } = true;
+        public Visibility CanvasVisibility
+        {
+            get => _canvasVisibility;
+            set { _canvasVisibility = value; OnPropertyChanged(nameof(CanvasVisibility)); }
+        }
+
+        public bool HitTestVisible
+        {
+            get => _hitTestVisible;
+            set { _hitTestVisible = value; OnPropertyChanged(nameof(HitTestVisible)); }
+        }
 
         public HomeViewModel(IServiceProvider serviceProvider)
         {
@@ -69,6 +90,7 @@ namespace ContratosMVVM.ViewModels
             EditarContratos = new EditarContratosCommand(serviceProvider);
             VisualizaPDF = new VisualizaPDVCommand(this, serviceProvider, (x) => MessageBox.Show(x.Message));
             SincronizarComBling = new SincronizarComBlingCommand(this, serviceProvider, progressIndicator, x => MessageBox.Show(x.Message));
+            GerarMensalidades = new ExibeDiálogoGeraMensalidade(this, serviceProvider);
             _clienteStore = serviceProvider.GetRequiredService<ClienteStore>();
             _contratoDataService = serviceProvider.GetRequiredService<ContratoDataService>();
             _iniFileService = serviceProvider.GetRequiredService<INIFileService>();
@@ -150,6 +172,41 @@ namespace ContratosMVVM.ViewModels
 
 
         }
+    }
+
+    public class ExibeDiálogoGeraMensalidade : ICommand
+    {
+        private readonly HomeViewModel _homeViewModel;
+        private readonly IDialogsStore _dialogStore;
+        private readonly ClienteStore _clienteStore;
+
+        public ExibeDiálogoGeraMensalidade(HomeViewModel homeViewModel, IServiceProvider serviceProvider)
+        {
+            _homeViewModel = homeViewModel;
+            _dialogStore = serviceProvider.GetRequiredService<IDialogsStore>();
+            _clienteStore = serviceProvider.GetRequiredService<ClienteStore>();
+            homeViewModel.PropertyChanged += HomeViewModel_PropertyChanged;
+        }
+
+        private void HomeViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            CanExecuteChanged?.Invoke(this, e);
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return _homeViewModel.ClienteSelecionado is not null;
+        }
+
+        public void Execute(object? parameter)
+        {
+            //_dialogGenerator.ViewModelExibido =
+            //    _dialogVMFactory.CreateDialogContentViewModel(TipoDialog.GeraContasView);
+            _clienteStore.Cliente = _homeViewModel.ClienteSelecionado;
+            _dialogStore.RegisterDialog(TipoDialog.GeraContasView);
+        }
+
+        public event EventHandler? CanExecuteChanged;
     }
 
     public class SincronizarComBlingCommand : AsyncCommandBase

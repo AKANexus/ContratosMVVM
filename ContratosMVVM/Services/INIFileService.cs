@@ -10,12 +10,12 @@ namespace ContratosMVVM.Services
     public class INIFileService
     {
         private readonly Dictionary<INIConfig, string> _defaultValues = new();
-
-
         private readonly Dictionary<INIConfig, string> _loadedConfigs;
         public INIFileService()
         {
             _defaultValues.Add(INIConfig.UltimaSync, default);
+            _defaultValues.Add(INIConfig.APIKey, default);
+            _defaultValues.Add(INIConfig.NumLoja, default);
             if (!File.Exists("config.ini"))
             {
                 File.Create("config.ini").Close();

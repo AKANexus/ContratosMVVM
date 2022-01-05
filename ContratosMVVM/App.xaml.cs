@@ -80,7 +80,7 @@ namespace ContratosMVVM
 
             var contextFactory = _host.Services.GetRequiredService<CobrancaDbContextFactory>();
             var context = contextFactory.CreateDbContext();
-            context.Database.EnsureCreated();
+            context.Database.Migrate();
 
 
             ActualStartup();

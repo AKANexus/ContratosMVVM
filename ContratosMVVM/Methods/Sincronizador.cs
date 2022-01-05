@@ -38,33 +38,33 @@ namespace ContratosMVVM.Methods
 
             OperationResponse response;
 
-            //List<CLIENTE> contatosServidor = null;
-            //OperationResponse contatosResponse;
-            //progress.Report(new ProgressReport("Bling", "Contatos", "Carregando dados a sincronizar"));
-            //(contatosResponse, contatosServidor) = await BaixaClientesDoBling.Execute(api, progress,
-            //    DateTime.Parse(iniFile.Get(INIConfig.UltimaSync)));
-            //if (!contatosResponse.IsSuccessful)
-            //{
-            //    progress.Report(new("Bling", "Contatos do Bling", $"{contatosResponse.ErrorMessage}"));
-            //    //log.Error("Contatos do Bling", contatosResponse.Exception);
-            //    return;
-            //}
+            List<CLIENTE> contatosServidor = null;
+            OperationResponse contatosResponse;
+            progress.Report(new ProgressReport("Bling", "Contatos", "Carregando dados a sincronizar"));
+            (contatosResponse, contatosServidor) = await BaixaClientesDoBling.Execute(api, progress,
+                DateTime.Parse(iniFile.Get(INIConfig.UltimaSync)));
+            if (!contatosResponse.IsSuccessful)
+            {
+                progress.Report(new("Bling", "Contatos do Bling", $"{contatosResponse.ErrorMessage}"));
+                //log.Error("Contatos do Bling", contatosResponse.Exception);
+                return;
+            }
 
 
-            //for (int i = 0; i < contatosServidor.Count; i++)
-            //{
-            //    progress.Report(new ProgressReport(null,
-            //        $"Contato {i + 1} de {contatosServidor.Count + 1}",
-            //        $"{contatosServidor[i].RazãoSocial}"));
-            //    response = await PUTContatoNoLocal.Execute(contatosServidor[i],
-            //        contatoDataService);
-            //    if (!response.IsSuccessful)
-            //    {
-            //        progress.Report(new(null, "Contatos", $"{response.ErrorMessage}"));
-            //        //log.Warn("Contato para a base local falhou", response.Exception);
-            //        continue;
-            //    }
-            //}
+            for (int i = 0; i < contatosServidor.Count; i++)
+            {
+                progress.Report(new ProgressReport(null,
+                    $"Contato {i + 1} de {contatosServidor.Count + 1}",
+                    $"{contatosServidor[i].RazãoSocial}"));
+                response = await PUTContatoNoLocal.Execute(contatosServidor[i],
+                    contatoDataService);
+                if (!response.IsSuccessful)
+                {
+                    progress.Report(new(null, "Contatos", $"{response.ErrorMessage}"));
+                    //log.Warn("Contato para a base local falhou", response.Exception);
+                    continue;
+                }
+            }
 
             try
             {

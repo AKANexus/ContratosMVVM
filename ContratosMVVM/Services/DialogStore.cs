@@ -3,15 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ContratosMVVM.Services
 {
     public class DialogsStore : IDialogsStore
     {
+        private readonly IDialogGenerator _dialogGenerator;
+        private readonly IDialogViewModelFactory _dialogVMFactory;
         public List<IDialogGenerator> OpenDialogs { get; set; } = new();
+
+        public DialogsStore(IServiceProvider serviceProvider)
+        {
+            _dialogGenerator = serviceProvider.GetRequiredService<IDialogGenerator>();
+            _dialogVMFactory = serviceProvider.GetRequiredService<IDialogViewModelFactory>();
+        }
 
         //Depois de 16 horas, é que eu consegui fazer isso funcionar. Não mexa nesse código
         //a não ser que eu tenha explicitamente pedido pra você mexer nele.
+
+        public int RegisterDialog(TipoDialog dialog, string windowTitle = "Título Não Fornecido", bool IsModal = true)
+        {
+            _dialogGenerator.ViewModelExibido = _dialogVMFactory.CreateDialogContentViewModel(dialog);
+
+            OpenDialogs.Add(_dialogGenerator);
+            _dialogGenerator.DialogClosed += Dialog_DialogClosed;
+            if (IsModal) _dialogGenerator.ShowDialog(windowTitle);
+            else _dialogGenerator.Show(windowTitle);
+            return OpenDialogs.Count - 1;
+        }
 
         public void CloseDialog(DialogResult dialogResult)
         {

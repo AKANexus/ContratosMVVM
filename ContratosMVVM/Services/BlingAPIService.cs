@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContratosMVVM.Auxiliares;
+using ContratosMVVM.Domain;
 using ContratosMVVM.Generics;
 using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
@@ -93,11 +94,7 @@ namespace ContratosMVVM.Services
                     break;
                 }
 
-                if (reply.Retorno.Erros is not null
-#if RESTRICTPAGES
-                    || page >= 6
-#endif
-                )
+                if (reply.Retorno.Erros is not null)
                 {
                     hasData = false;
                 }
@@ -111,6 +108,66 @@ namespace ContratosMVVM.Services
                 }
             }
             return AllContatos;
+        }
+
+        public async Task<bool> POSTContaReceber(IProgress<ProgressReport> progresso, CLIENTE cliente, DateTime vencimento)
+        {
+            var client = new RestClient();
+            client.Timeout = 15000;
+            var request = new RestRequest(Method.POST);
+            int currentAttempt = 1;
+            JsonDeserializer deserial = new();
+
+            progresso.Report(new ProgressReport("Bling", "ContaReceber", $"Gravando conta a receber com vencimento em {vencimento}."));
+            var xmlContaRec = $"<contareceber><valor>{cliente.Contratos.Sum(x=>x.ValorTotalDoContrato)}</valor><vencimentoOriginal>{vencimento:dd/MM/yyyy}</vencimentoOriginal><historico>Ref. à mensalidade de prestação de serviços</historico><ocorrencia><ocorrenciaTipo>U</ocorrenciaTipo></ocorrencia><cliente><nome>{cliente.RazãoSocial}</nome><cpf_cnpj>{cliente.CNPJCPF}</cpf_cnpj></cliente></contareceber>";
+            IRestResponse response;
+            try
+            {
+
+                client.BaseUrl =
+                    new Uri(
+                        @$"https://bling.com.br/b/Api/v2/contareceber/json/?apikey={_apikey}&xml={xmlContaRec}");
+
+
+                response = await client.ExecuteAsync(request);
+
+            }
+            catch (Exception e)
+            {
+                log.Error($"POSTContaReceber lançou uma exceção em \"client.Execute\":");
+                log.Error(e.Message);
+                return false;
+            }
+
+            RootContato reply = new();
+
+            while (!response.IsSuccessful && currentAttempt < 11)
+            {
+                await Task.Delay(1000);
+                response = await client.ExecuteAsync(request);
+                progresso.Report(new ProgressReport("Bling", "Contatos", $"Tentando novamente {currentAttempt}/10"));
+                currentAttempt++;
+            }
+
+            if (response.IsSuccessful)
+            {
+                currentAttempt = 1;
+                reply = deserial.Deserialize<RootContato>(response);
+            }
+            else
+            {
+                log.Error($"POSTContaReceber lançou uma exceção em \"client.Execute\":");
+            }
+
+            if (reply.Retorno.Erros is not null)
+            {
+                progresso.Report(new("Bling", "ContaReceber", reply.Retorno.Erros[0].Msg));
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

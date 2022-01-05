@@ -13,7 +13,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Canvas x:Name="Overlay" Background="#33000000" ZIndex="1" Grid.RowSpan="2" Margin="15" Visibility="{Binding CanvasVisibility}">
+        <Canvas x:Name="Overlay" Background="#33000000" ZIndex="1" Grid.RowSpan="2" Margin="15" Visibility="{Binding CanvasVisibility}" d:Visibility="Collapsed">
             <Grid Width="{Binding ActualWidth, ElementName=Overlay}" Height="{Binding ActualHeight, ElementName=Overlay}">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="3">
                     <TextBlock Text="{Binding TABELATextBlock}"  VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36" FontWeight="Bold"/>
@@ -43,11 +43,11 @@
             </TextBox>
             <Button Grid.Column="2" Margin="5,0" Padding="5,0" Content="Pesquisar" HorizontalAlignment="Center" Command="{Binding Pesquisar}"/>
             <Border Background="Gray" Width="1" Grid.Column="3"/>
-            <Button Grid.Column="4" IsEnabled="False" Margin="5,0" Padding="5,0" Content="Gerar Mensalidades" HorizontalAlignment="Center" Command="{Binding GerarMensalidades}"/>
+            <Button Grid.Column="4" IsEnabled="True" Margin="5,0" Padding="5,0" Content="Gerar Mensalidades" HorizontalAlignment="Center" Command="{Binding GerarMensalidades}"/>
             <Border Background="Gray" Width="1" Grid.Column="5"/>
             <Button Visibility="Visible" Grid.Column="6" Margin="5,0" Padding="5,0" Content="Contratos" HorizontalAlignment="Center" Command="{Binding EditarContratos}" />
             <Border Background="Gray" Width="1" Grid.Column="7"/>
-            <Button Visibility="Visible" Grid.Column="8" Margin="5,0" Padding="5,0" Content="Sincr." HorizontalAlignment="Center" Command="{Binding SincronizarComBling}" />
+            <Button Visibility="Collapsed" Grid.Column="8" Margin="5,0" Padding="5,0" Content="Sincr." HorizontalAlignment="Center" Command="{Binding SincronizarComBling}" />
         </Grid>
         <DataGrid AutoGenerateColumns="False" 
                   EnableRowVirtualization="True" 

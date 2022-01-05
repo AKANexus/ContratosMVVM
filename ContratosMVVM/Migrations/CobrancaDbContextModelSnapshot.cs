@@ -14,74 +14,88 @@ namespace ContratosMVVM.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("ContratosMVVM.Domain.CLIENTE", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Bairro")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("BlingID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CEP")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CNPJCPF")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CPFDoRepresentante")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Cidade")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                    b.Property<int>("DataMelhorVencimento")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Endereço")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Estado")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("IDFirebird")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("RazãoSocial")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Representante")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Telefone")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CLIENTE");
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("ContratosMVVM.Domain.CONTRATO", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ClienteId")
-                        .HasColumnType("int");
+                    b.Property<int?>("CLIENTEId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("ContratoBaseId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ContratoPDF")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("FirebirdIDCliente")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Quantidade")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("ValorUnitário")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Vigência")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("CLIENTEId");
 
                     b.HasIndex("ContratoBaseId");
 
@@ -92,16 +106,16 @@ namespace ContratosMVVM.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descrição")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("SetorId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -110,14 +124,31 @@ namespace ContratosMVVM.Migrations
                     b.ToTable("ContratoBases");
                 });
 
+            modelBuilder.Entity("ContratosMVVM.Domain.OBSERVACAO", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("FirebirdId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Texto")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Observacoes");
+                });
+
             modelBuilder.Entity("ContratosMVVM.Domain.SETOR", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Setor")
-                        .HasColumnType("longtext");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -126,15 +157,13 @@ namespace ContratosMVVM.Migrations
 
             modelBuilder.Entity("ContratosMVVM.Domain.CONTRATO", b =>
                 {
-                    b.HasOne("ContratosMVVM.Domain.CLIENTE", "Cliente")
+                    b.HasOne("ContratosMVVM.Domain.CLIENTE", null)
                         .WithMany("Contratos")
-                        .HasForeignKey("ClienteId");
+                        .HasForeignKey("CLIENTEId");
 
                     b.HasOne("ContratosMVVM.Domain.CONTRATO_BASE", "ContratoBase")
                         .WithMany("Contratos")
                         .HasForeignKey("ContratoBaseId");
-
-                    b.Navigation("Cliente");
 
                     b.Navigation("ContratoBase");
                 });
