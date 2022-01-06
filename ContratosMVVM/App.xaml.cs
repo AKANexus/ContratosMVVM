@@ -79,8 +79,8 @@ namespace ContratosMVVM
             Logger.Start(new FileInfo($"./Logs/LOG-{DateTime.Today:dd-MM-yy}.log"));
 
             var contextFactory = _host.Services.GetRequiredService<CobrancaDbContextFactory>();
-            var context = contextFactory.CreateDbContext();
-            context.Database.Migrate();
+            //var context = contextFactory.CreateDbContext();
+            //context.Database.Migrate();
 
 
             ActualStartup();

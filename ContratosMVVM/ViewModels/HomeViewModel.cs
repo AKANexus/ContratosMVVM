@@ -108,67 +108,67 @@ namespace ContratosMVVM.ViewModels
         private async Task PreencheClientesFull()
         {
 
-            foreach (CLIENTE cliente in await _clienteDataService.GetAllAsNoTracking())
+            //foreach (CLIENTE cliente in await _clienteDataService.GetAllAsNoTracking())
+            //{
+            //    ClientesListFull.Add(cliente);
+            //}
+            string firebirdLocation = _iniFileService.Get(INIConfig.BaseClipp);
+            using var fbConnection =
+                new FbConnection(
+                    $@"initial catalog={firebirdLocation};data source=192.168.10.250;user id=SYSDBA;password=masterke;encoding=WIN1252;charset=utf8");
+            using var fbCommand = new FbCommand { Connection = fbConnection, CommandType = CommandType.Text, CommandText = "SELECT * FROM V_CLIENTES" };
+            using var fbDataAdapter = new FbDataAdapter(fbCommand);
+            try
             {
-                ClientesListFull.Add(cliente);
+                fbConnection.Open();
+                fbDataAdapter.Fill(_dataTable);
             }
-            //string firebirdLocation = _iniFileService.Get(INIConfig.BaseClipp);
-            //using var fbConnection =
-            //    new FbConnection(
-            //        $@"initial catalog={firebirdLocation};data source=192.168.10.250;user id=SYSDBA;password=masterke;encoding=WIN1252;charset=utf8");
-            //using var fbCommand = new FbCommand { Connection = fbConnection, CommandType = CommandType.Text, CommandText = "SELECT * FROM V_CLIENTES" };
-            //using var fbDataAdapter = new FbDataAdapter(fbCommand);
-            //try
-            //{
-            //    fbConnection.Open();
-            //    fbDataAdapter.Fill(_dataTable);
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //    throw;
-            //}
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
 
 
 
-            //foreach (DataRow dataRow in _dataTable.Rows)
-            //{
-            //    CLIENTE cli = new();
-            //    try
-            //    {
-            //        string cnpjcpf = null;
-            //        if (dataRow["CPF"] != DBNull.Value)
-            //            cnpjcpf = (string)dataRow["CPF"];
-            //        if (dataRow["CNPJ"] != DBNull.Value)
-            //            cnpjcpf = (string)dataRow["CNPJ"];
+            foreach (DataRow dataRow in _dataTable.Rows)
+            {
+                CLIENTE cli = new();
+                try
+                {
+                    string cnpjcpf = null;
+                    if (dataRow["CPF"] != DBNull.Value)
+                        cnpjcpf = (string)dataRow["CPF"];
+                    if (dataRow["CNPJ"] != DBNull.Value)
+                        cnpjcpf = (string)dataRow["CNPJ"];
 
-            //        cli.CNPJCPF = cnpjcpf;
-            //        string ddd = (string)(dataRow["DDD_RESID"] == DBNull.Value ? null : dataRow["DDD_RESID"]);
-            //        string telefone = (string)(dataRow["FONE_RESID"] == DBNull.Value ? null : dataRow["FONE_RESID"]);
+                    cli.CNPJCPF = cnpjcpf;
+                    string ddd = (string)(dataRow["DDD_RESID"] == DBNull.Value ? null : dataRow["DDD_RESID"]);
+                    string telefone = (string)(dataRow["FONE_RESID"] == DBNull.Value ? null : dataRow["FONE_RESID"]);
 
-            //        cli.Telefone = $"{ddd}-{telefone}";
-            //        cli.RazãoSocial = ((string)(dataRow["NOME"] == DBNull.Value ? null : dataRow["NOME"])).ToUpper();
-            //        cli.Endereço = (string)(dataRow["END_LOGRAD"] == DBNull.Value ? null : dataRow["END_LOGRAD"])
-            //                       + ", " +
-            //                       (string)(dataRow["END_NUMERO"] == DBNull.Value ? null : dataRow["END_NUMERO"]);
-            //        cli.Cidade = (string)(dataRow["CIDADE"] == DBNull.Value ? null : dataRow["CIDADE"]);
-            //        cli.Estado = (string)(dataRow["UF"] == DBNull.Value ? null : dataRow["UF"]);
-            //        cli.Bairro = (string)(dataRow["END_BAIRRO"] == DBNull.Value ? null : dataRow["END_BAIRRO"]);
-            //        cli.CEP = (string)(dataRow["END_CEP"] == DBNull.Value ? null : dataRow["END_CEP"]);
-            //        cli.Representante = (string)(dataRow["SOC_GERENTE"] == DBNull.Value ? null : dataRow["SOC_GERENTE"]);
-            //        cli.CPFDoRepresentante = (string)(dataRow["INSC_MUNIC"] == DBNull.Value ? null : dataRow["INSC_MUNIC"]);
-            //        cli.DataMelhorVencimento = (dataRow["DT_MELHOR_VENCTO"] == DBNull.Value ? 0 : (short)dataRow["DT_MELHOR_VENCTO"]);
-            //        cli.IDFirebird = (int)(dataRow["ID_CLIENTE"]);
-            //        //cli.Contratos = await _contratoDataService.GetAllAsNoTrackingByCliente(cli);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e);
-            //        throw;
-            //    }
+                    cli.Telefone = $"{ddd}-{telefone}";
+                    cli.RazãoSocial = ((string)(dataRow["NOME"] == DBNull.Value ? null : dataRow["NOME"])).ToUpper();
+                    cli.Endereço = (string)(dataRow["END_LOGRAD"] == DBNull.Value ? null : dataRow["END_LOGRAD"])
+                                   + ", " +
+                                   (string)(dataRow["END_NUMERO"] == DBNull.Value ? null : dataRow["END_NUMERO"]);
+                    cli.Cidade = (string)(dataRow["CIDADE"] == DBNull.Value ? null : dataRow["CIDADE"]);
+                    cli.Estado = (string)(dataRow["UF"] == DBNull.Value ? null : dataRow["UF"]);
+                    cli.Bairro = (string)(dataRow["END_BAIRRO"] == DBNull.Value ? null : dataRow["END_BAIRRO"]);
+                    cli.CEP = (string)(dataRow["END_CEP"] == DBNull.Value ? null : dataRow["END_CEP"]);
+                    cli.Representante = (string)(dataRow["SOC_GERENTE"] == DBNull.Value ? null : dataRow["SOC_GERENTE"]);
+                    cli.CPFDoRepresentante = (string)(dataRow["INSC_MUNIC"] == DBNull.Value ? null : dataRow["INSC_MUNIC"]);
+                    cli.DataMelhorVencimento = (dataRow["DT_MELHOR_VENCTO"] == DBNull.Value ? 0 : (short)dataRow["DT_MELHOR_VENCTO"]);
+                    cli.IDFirebird = (int)(dataRow["ID_CLIENTE"]);
+                    //cli.Contratos = await _contratoDataService.GetAllAsNoTrackingByCliente(cli);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
 
-            //    ClientesListFull.Add(cli);
-            //}
+                ClientesListFull.Add(cli);
+            }
 
 
         }

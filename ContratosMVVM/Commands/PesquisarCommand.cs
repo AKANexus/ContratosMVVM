@@ -47,11 +47,11 @@ namespace ContratosMVVM.Commands
                 cliente.Contratos = await _contratoDataService.GetAllAsNoTrackingByCliente(cliente);
                 _homeViewModel.ClientesList.Add(cliente);
             }
-            _homeViewModel.ClientesList.Add(new()
-            {
-                RazãoSocial = "Teste Armando de Salles",
-                CNPJCPF = "102.499.043-57"
-            });
+            //_homeViewModel.ClientesList.Add(new()
+            //{
+            //    RazãoSocial = "Teste Armando de Salles",
+            //    CNPJCPF = "102.499.043-57"
+            //});
         }
     }
 }

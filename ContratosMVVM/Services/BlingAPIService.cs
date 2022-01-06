@@ -120,6 +120,7 @@ namespace ContratosMVVM.Services
 
             progresso.Report(new ProgressReport("Bling", "ContaReceber", $"Gravando conta a receber com vencimento em {vencimento}."));
             var xmlContaRec = $"<contareceber><valor>{cliente.Contratos.Sum(x=>x.ValorTotalDoContrato)}</valor><vencimentoOriginal>{vencimento:dd/MM/yyyy}</vencimentoOriginal><historico>Ref. à mensalidade de prestação de serviços</historico><ocorrencia><ocorrenciaTipo>U</ocorrenciaTipo></ocorrencia><cliente><nome>{cliente.RazãoSocial}</nome><cpf_cnpj>{cliente.CNPJCPF}</cpf_cnpj></cliente></contareceber>";
+
             IRestResponse response;
             try
             {
@@ -151,7 +152,6 @@ namespace ContratosMVVM.Services
 
             if (response.IsSuccessful)
             {
-                currentAttempt = 1;
                 reply = deserial.Deserialize<RootContato>(response);
             }
             else
