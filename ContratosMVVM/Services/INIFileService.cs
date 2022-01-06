@@ -4,7 +4,11 @@ using System.IO;
 
 namespace ContratosMVVM.Services
 {
-    public enum INIConfig { MySQLIP, BaseClipp };
+    public enum INIConfig { MySQLIP, BaseClipp,
+        APIKey,
+        NumLoja,
+        UltimaSync
+    };
     public class INIFileService
     {
         private readonly Dictionary<INIConfig, string> _defaultValues = new();
@@ -15,6 +19,8 @@ namespace ContratosMVVM.Services
         {
             _defaultValues.Add(INIConfig.MySQLIP, "localhost");
             _defaultValues.Add(INIConfig.BaseClipp, @"D:\PROGRAMAS\CompuFour\Clipp_ASSISTENCIA\Clipp\Base\CLIPP.FDB");
+            _defaultValues.Add(INIConfig.APIKey, "myApiKey");
+            _defaultValues.Add(INIConfig.NumLoja, "numLoja");
             if (!File.Exists("config.ini"))
             {
                 File.Create("config.ini").Close();
@@ -26,10 +32,7 @@ namespace ContratosMVVM.Services
                 {
                     continue;
                 }
-                var (key, value) = (
-                    Enum.Parse<INIConfig>(item.Split('=')[0]),
-                    item.Split('=')[1]
-                );
+                var (key, value) = (   Enum.Parse<INIConfig>(item.Split('=')[0]),    item.Split('=')[1]   );
 
                 _loadedConfigs.Add(key, value);
             }

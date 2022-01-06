@@ -44,7 +44,11 @@ namespace ContratosMVVM.ViewModels
         public CLIENTE ClienteSelecionado
         {
             get => _clienteStore.Cliente;
-            set => _clienteStore.Cliente = value;
+            set
+            {
+                _clienteStore.Cliente = value;
+                OnPropertyChanged(nameof(ClienteSelecionado));
+            }
         }
 
         public ICommand EditarContratos { get; set; }
@@ -57,6 +61,7 @@ namespace ContratosMVVM.ViewModels
             EditaSelecionado = new EditaSelecionadoCommand(this, serviceProvider);
             EditarContratos = new EditarContratosCommand(serviceProvider);
             VisualizaPDF = new VisualizaPDVCommand(this, serviceProvider, (x) => MessageBox.Show(x.Message));
+            GerarMensalidades = new ExibeDiálogoGeraMensalidade(this, serviceProvider);
             _clienteStore = serviceProvider.GetRequiredService<ClienteStore>();
             _contratoDataService = serviceProvider.GetRequiredService<ContratoDataService>();
             _iniFileService = serviceProvider.GetRequiredService<INIFileService>();
@@ -83,7 +88,7 @@ namespace ContratosMVVM.ViewModels
             }
 
 
-           
+
             foreach (DataRow dataRow in _dataTable.Rows)
             {
                 CLIENTE cli = new();
@@ -123,6 +128,41 @@ namespace ContratosMVVM.ViewModels
                 ClientesListFull.Add(cli);
             }
         }
+    }
+
+    public class ExibeDiálogoGeraMensalidade : ICommand
+    {
+        private readonly HomeViewModel _homeViewModel;
+        private readonly IDialogsStore _dialogStore;
+        private readonly ClienteStore _clienteStore;
+
+        public ExibeDiálogoGeraMensalidade(HomeViewModel homeViewModel, IServiceProvider serviceProvider)
+        {
+            _homeViewModel = homeViewModel;
+            _dialogStore = serviceProvider.GetRequiredService<IDialogsStore>();
+            _clienteStore = serviceProvider.GetRequiredService<ClienteStore>();
+            homeViewModel.PropertyChanged += HomeViewModel_PropertyChanged;
+        }
+
+        private void HomeViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            CanExecuteChanged?.Invoke(this, e);
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return _homeViewModel.ClienteSelecionado is not null;
+        }
+
+        public void Execute(object? parameter)
+        {
+            //_dialogGenerator.ViewModelExibido =
+            //    _dialogVMFactory.CreateDialogContentViewModel(TipoDialog.GeraContasView);
+            _clienteStore.Cliente = _homeViewModel.ClienteSelecionado;
+            _dialogStore.RegisterDialog(TipoDialog.GeraContasView);
+        }
+
+        public event EventHandler? CanExecuteChanged;
     }
 
     public class VisualizaPDVCommand : AsyncCommandBase

@@ -11,6 +11,7 @@ namespace ContratosMVVM.Services
         public List<IDialogGenerator> OpenDialogs { get; set; }
 
         public int RegisterDialog(IDialogGenerator dialog, string windowTitle = "Título Não Fornecido", bool IsModal = true);
+        public int RegisterDialog(TipoDialog dialog, string windowTitle = "Título Não Fornecido", bool IsModal = true);
         public void CloseDialog(DialogResult dialogResult);
     }
 }

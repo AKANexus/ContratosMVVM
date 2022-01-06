@@ -20,13 +20,13 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
             <Label Content="Mês" Margin="0,0,5,0"/>
-            <TextBox VerticalAlignment="Center" Width="100" Margin="5,0,20,0" Text="{Binding Mes}"/>
+            <TextBox VerticalAlignment="Center" Width="100" Margin="5,0,20,0" Text="{Binding Mes, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Ano" Margin="20,0,5,0"/>
-            <TextBox VerticalAlignment="Center" MaxLength="2" Width="100" Margin="5,0,0,0" Text="{Binding Ano}"/>
+            <TextBox VerticalAlignment="Center" MaxLength="2" Width="100" Margin="5,0,0,0" Text="{Binding Ano, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
             <Label Content="Dia para Vencimento" Margin="20,0,5,0"/>
-            <TextBox VerticalAlignment="Center" Width="100" Margin="5,0,0,0" Text="{Binding DiaVencimento}"/>
+            <TextBox VerticalAlignment="Center" Width="100" Margin="5,0,0,0" Text="{Binding DiaVencimento, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
             <Button Content="Gerar Contas a Receber" VerticalAlignment="Center" Command="{Binding GerarContasAReceber}"/>
