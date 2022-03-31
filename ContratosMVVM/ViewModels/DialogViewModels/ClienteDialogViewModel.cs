@@ -111,6 +111,12 @@ namespace ContratosMVVM.ViewModels.DialogViewModels
 
         public ICommand SaveObservacao { get; set; }
 
+        public string ObservacaoContrato
+        {
+            get => ContratoSelecionado?.Observacao ?? "";
+            set => ContratoSelecionado.Observacao = value;
+        }
+
         public ClienteDialogViewModel(HomeViewModel homeViewModel, IServiceProvider serviceProvider)
         {
             Adicionar = new AdicionarCommand(this);

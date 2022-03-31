@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -57,6 +58,8 @@ namespace ContratosMVVM.ViewModels.DialogViewModels
         private readonly BlingAPIService _api;
         private int _mes, _ano, _diaVenc;
         private readonly Progress<ProgressReport> progressIndicator = new();
+        private bool _running = false;
+        private readonly ContratoDataService _contratosDataService;
 
         public GerarContasAReceberBlingCommand(GeraContasViewModel geraContasViewModel, IServiceProvider serviceProvider, CLIENTE clienteStoreCliente, Action<Exception> func) : base(func)
         {
@@ -64,6 +67,8 @@ namespace ContratosMVVM.ViewModels.DialogViewModels
             _clienteStoreCliente = clienteStoreCliente;
             _api = serviceProvider.GetRequiredService<BlingAPIService>();
             geraContasViewModel.PropertyChanged += GeraContasViewModel_PropertyChanged;
+            _contratosDataService = serviceProvider.GetRequiredService<ContratoDataService>();
+
         }
 
         private void GeraContasViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -75,26 +80,43 @@ namespace ContratosMVVM.ViewModels.DialogViewModels
 
         public override bool CanExecute(object parameter)
         {
-            return int.TryParse(string.IsNullOrWhiteSpace(_geraContasViewModel.Mes) ? "0" : _geraContasViewModel.Mes, out _mes) &&
+            return int.TryParse(string.IsNullOrWhiteSpace(_geraContasViewModel.Mes) ? "0" : _geraContasViewModel.Mes,
+                       out _mes) &&
                    int.TryParse(_geraContasViewModel.Ano, out _ano) &&
-                   int.TryParse(_geraContasViewModel.DiaVencimento, out _diaVenc);
+                   int.TryParse(_geraContasViewModel.DiaVencimento, out _diaVenc) && !_running;
         }
 
         protected override async Task ExecuteAsync(object parameter)
         {
-            if (_mes == 0)
+            _running = true;
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            try
             {
-                for (int i = DateTime.Today.Month; i < 13; i++)
+                if (_mes == 0)
                 {
-                    await _api.POSTContaReceber(progressIndicator, _clienteStoreCliente, new(_ano, i, _diaVenc));
-                }
-                MessageBox.Show("ContaReceber do ano gerada");
+                    for (int i = DateTime.Today.Month; i < 13; i++)
+                    {
+                        await _api.POSTContaReceber(progressIndicator, _clienteStoreCliente, new(_ano, i, _diaVenc), (await _contratosDataService.GetAllAsNoTrackingByCliente(_clienteStoreCliente)).Sum(x=>x.ValorTotalDoContrato));
+                    }
 
+                    MessageBox.Show("ContaReceber do ano gerada");
+
+                }
+                else
+                {
+                    await _api.POSTContaReceber(progressIndicator, _clienteStoreCliente, new(_ano, _mes, _diaVenc), (await _contratosDataService.GetAllAsNoTrackingByCliente(_clienteStoreCliente)).Sum(x=>x.ValorTotalDoContrato));
+                    MessageBox.Show("ContaReceber gerada");
+                }
             }
-            else
+            catch (Exception e)
             {
-                await _api.POSTContaReceber(progressIndicator, _clienteStoreCliente, new(_ano, _mes, _diaVenc));
-                MessageBox.Show("ContaReceber gerada");
+                Console.WriteLine(e);
+            }
+
+            finally
+            {
+                _running = false;
+                CanExecuteChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }

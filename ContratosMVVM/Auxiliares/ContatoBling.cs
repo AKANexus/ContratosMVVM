@@ -127,6 +127,9 @@ namespace ContratosMVVM.Auxiliares
 
         [JsonPropertyName("msg")]
         public string Msg { get; set; }
+
+        [JsonPropertyName("erro")]
+        public Erro erro { get; set; }
     }
 
 }

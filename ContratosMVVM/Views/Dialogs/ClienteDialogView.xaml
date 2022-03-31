@@ -9,7 +9,7 @@
              xmlns:dialogViewModels="clr-namespace:ContratosMVVM.ViewModels.DialogViewModels"
              xmlns:controls="clr-namespace:ContratosMVVM.Controls"
              xmlns:converters="clr-namespace:ContratosMVVM.Converters"
-             mc:Ignorable="d"  Height="550" Width="800" d:DataContext="{d:DesignInstance  dialogViewModels:ClienteDialogViewModel}"
+             mc:Ignorable="d"  Height="650" Width="800" d:DataContext="{d:DesignInstance  dialogViewModels:ClienteDialogViewModel}"
              Language="pt-BR">
     <UserControl.Resources>
         <converters:EmptyIfZeroConverter x:Key="emptyIfZero"/>
@@ -89,6 +89,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Tipo de Contrato" Margin="15, 5" FontSize="14"/>
                 <ComboBox Grid.Row="1" Margin="15, 5" FontSize="14" DisplayMemberPath="Nome" SelectedValuePath="Id" SelectedValue="{Binding ContratoSelecionado.ContratoBaseId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding TiposDeContratoList}"/>
@@ -101,6 +103,9 @@
                 <TextBlock Grid.Column="4" Text="Vigência" Margin="10,5" FontSize="14"/>
                 <TextBox Grid.Row="1" Grid.Column="4" Margin="10, 5" FontSize="14" Text="{Binding Vigência, Converter={StaticResource emptyIfZero}, ConverterParameter=D}"/>
                 <Button Grid.Column="5" Grid.RowSpan="2" Margin="5" Content="Salvar" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="20,10" FontSize="14" Command="{Binding SalvaContratoSelecionado}"/>
+                <TextBlock Grid.Row="2" Text="Observação do Contrato" Margin="15, 5" FontSize="14"/>
+                <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="10, 5" FontSize="14" Text="{Binding ObservacaoContrato}" Height="61.86"/>
+
             </Grid>
         </Border>
         <!--<Expander Grid.Row="4" Grid.RowSpan="2"></Expander>-->

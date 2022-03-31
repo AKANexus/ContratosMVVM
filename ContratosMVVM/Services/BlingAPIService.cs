@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using ContratosMVVM.Auxiliares;
 using ContratosMVVM.Domain;
 using ContratosMVVM.Generics;
@@ -27,7 +28,7 @@ namespace ContratosMVVM.Services
             log.Debug($"ApiKey = {_apikey}");
             log.Debug($"NumLoja = {_numLoja}");
         }
-
+        /*
         public async Task<List<Contato2>> GETAllContatos(IProgress<ProgressReport> progresso, DateTime startDate = default, DateTime endDate = default)
         {
             List<Contato2> AllContatos = new();
@@ -109,8 +110,8 @@ namespace ContratosMVVM.Services
             }
             return AllContatos;
         }
-
-        public async Task<bool> POSTContaReceber(IProgress<ProgressReport> progresso, CLIENTE cliente, DateTime vencimento)
+        */
+        public async Task<bool> POSTContaReceber(IProgress<ProgressReport> progresso, CLIENTE cliente, DateTime vencimento, decimal valorConta)
         {
             var client = new RestClient();
             client.Timeout = 15000;
@@ -119,8 +120,8 @@ namespace ContratosMVVM.Services
             JsonDeserializer deserial = new();
 
             progresso.Report(new ProgressReport("Bling", "ContaReceber", $"Gravando conta a receber com vencimento em {vencimento}."));
-            var xmlContaRec = $"<contareceber><valor>{cliente.Contratos.Sum(x=>x.ValorTotalDoContrato)}</valor><vencimentoOriginal>{vencimento:dd/MM/yyyy}</vencimentoOriginal><historico>Ref. à mensalidade de prestação de serviços</historico><ocorrencia><ocorrenciaTipo>U</ocorrenciaTipo></ocorrencia><cliente><nome>{cliente.RazãoSocial}</nome><cpf_cnpj>{cliente.CNPJCPF}</cpf_cnpj></cliente></contareceber>";
-
+            var xmlContaRec = $"<contareceber><valor>{(valorConta.ToString("N2", CultureInfo.InvariantCulture)).Replace(",", "")}</valor><nroDocumento>0{cliente.IDFirebird}{vencimento.AddMonths(-1):MM}{vencimento.AddMonths(-1):yy}</nroDocumento><vencimentoOriginal>{vencimento:dd/MM/yyyy}</vencimentoOriginal><historico>REF. À MENSALIDADE DE {vencimento.AddMonths(-1):MMM/yy}</historico><ocorrencia><ocorrenciaTipo>U</ocorrenciaTipo></ocorrencia><cliente><nome>{cliente.RazãoSocial.Replace("&", "E")}</nome><cpf_cnpj>{cliente.CNPJCPF}</cpf_cnpj></cliente></contareceber>";
+            log.Info(xmlContaRec);
             IRestResponse response;
             try
             {
@@ -135,8 +136,7 @@ namespace ContratosMVVM.Services
             }
             catch (Exception e)
             {
-                log.Error($"POSTContaReceber lançou uma exceção em \"client.Execute\":");
-                log.Error(e.Message);
+                log.Error($"POST ContaReceber lançou uma exceção em \"client.Execute\":", e);
                 return false;
             }
 
@@ -156,7 +156,10 @@ namespace ContratosMVVM.Services
             }
             else
             {
-                log.Error($"POSTContaReceber lançou uma exceção em \"client.Execute\":");
+                reply = deserial.Deserialize<RootContato>(response);
+                MessageBox.Show(reply.Retorno.Erros[0].erro.Msg);
+                log.Error($"POST ContaReceber IsSuccessful foi falso");
+                log.Error(response.Content);
             }
 
             if (reply.Retorno.Erros is not null)

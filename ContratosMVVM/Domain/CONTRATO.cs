@@ -19,6 +19,8 @@ namespace ContratosMVVM.Domain
         public string ContratoPDF { get; set; }
         //public CLIENTE Cliente { get; set; }
         [NotMapped] public decimal ValorTotalDoContrato => (ValorUnitário * Quantidade);
+
+        public string Observacao { get; set; }
         //ALTER TABLE Contratos ADD ContratoPDF TEXT;
 
     }

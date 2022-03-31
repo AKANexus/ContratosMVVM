@@ -155,7 +155,7 @@ namespace ContratosMVVM.Commands
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao gravar conta a receber. \n\nSe o problema persistir, por favor entre em contato com a equipe de suporte.");
+                MessageBox.Show("AAA ao gravar conta a receber. \n\nSe o problema persistir, por favor entre em contato com a equipe de suporte.");
                 MessageBox.Show(ex.Message);
                 if (!String.IsNullOrWhiteSpace(ex.InnerException.Message)) MessageBox.Show(ex.InnerException.Message);
                 return false;
@@ -163,7 +163,7 @@ namespace ContratosMVVM.Commands
 
             /*if (result_contarec != 1)
             {
-                MessageBox.Show("Erro ao gravar conta a receber (FinalizaNoSATLocal - Erro ao gerar ContaRec). \n\nPor favor entre em contato com a equipe de suporte.");
+                MessageBox.Show("AAA ao gravar conta a receber (FinalizaNoSATLocal - AAA ao gerar ContaRec). \n\nPor favor entre em contato com a equipe de suporte.");
                 return;
             }*/
 
@@ -183,7 +183,7 @@ namespace ContratosMVVM.Commands
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao gravar movimentação referente à conta a receber. \n\nSe o problema persistir, por favor entre em contato com a equipe de suporte.");
+                MessageBox.Show("AAA ao gravar movimentação referente à conta a receber. \n\nSe o problema persistir, por favor entre em contato com a equipe de suporte.");
                 MessageBox.Show(ex.Message);
                 if (!String.IsNullOrWhiteSpace(ex.InnerException.Message)) MessageBox.Show(ex.InnerException.Message);
 
@@ -192,7 +192,7 @@ namespace ContratosMVVM.Commands
             /*
             if (result_movdiario != 1)
             {
-                MessageBox.Show("Erro ao gravar movimentação financeira (FinalizaNoSATLocal - Erro ao gerar MovDiario). \n\nPor favor entre em contato com a equipe de suporte.");
+                MessageBox.Show("AAA ao gravar movimentação financeira (FinalizaNoSATLocal - AAA ao gerar MovDiario). \n\nPor favor entre em contato com a equipe de suporte.");
                 return;
             }
             */
@@ -207,7 +207,7 @@ namespace ContratosMVVM.Commands
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao gravar movimentação/conta a receber. \n\nSe o problema persistir, por favor entre em contato com a equipe de suporte.");
+                MessageBox.Show("AAA ao gravar movimentação/conta a receber. \n\nSe o problema persistir, por favor entre em contato com a equipe de suporte.");
                 MessageBox.Show(ex.Message);
                 if (!String.IsNullOrWhiteSpace(ex.InnerException.Message)) MessageBox.Show(ex.InnerException.Message);
                 return false;

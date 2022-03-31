@@ -18,6 +18,11 @@ namespace ContratosMVVM.Services
 {
     public class ContratoDocService
     {
+        private const string _razãoSocial = "TRILHA TECNOLOGIA LTDA";
+        private const string _cnpj = "14.839.018.0001-96";
+        private const string _ie = "146.869.818.113";
+        private const string _representante = "Ricardo Leite Machi";
+        private const string _cpf = "157.608.748-45";
         private CLIENTE _cliente;
         private List<CONTRATO> _contratos;
         private DocX _documento;
@@ -74,11 +79,11 @@ namespace ContratosMVVM.Services
 
             //Define o conteúdo das células da tabela
             t.Rows[0].Cells[0].Paragraphs[0].InsertPicture(logoPicture);
-            t.Rows[0].Cells[1].Paragraphs[0].Append("AMBISOF DISTRIBUIDORA TECNOLOGICA LTDA")
+            t.Rows[0].Cells[1].Paragraphs[0].Append(_razãoSocial)
                 .FontSize(8D).Bold()
-                .AppendLine("CNPJ: 22.141.365/0001-79")
+                .AppendLine($"CNPJ: {_cnpj}")
                 .FontSize(8D).Bold()
-                .AppendLine("I.E. 144.422.365.113")
+                .AppendLine($"I.E. {_ie}")
                 .FontSize(8D).Bold()
                 .AppendLine("Tel.: 11 4304-7778")
                 .FontSize(8D)
@@ -101,10 +106,10 @@ namespace ContratosMVVM.Services
             var t2 = document.InsertParagraph().InsertTableBeforeSelf(2, 1);
 
             t2.Rows[0].Cells[0].Paragraphs[0].Append("DORAVANTE DENOMINADA: CONTRATADA").Bold().Alignment = Alignment.center;
-            t2.Rows[1].Cells[0].Paragraphs[0].Append("RAZÃO SOCIAL: ").Bold().Append($"AMBISOF DISTRIBUIDORA TECNOLÓGICA ".ToUpper()).Append("CNPJ: ").Bold().Append($"22.141.365/0001-79")
+            t2.Rows[1].Cells[0].Paragraphs[0].Append("RAZÃO SOCIAL: ").Bold().Append($"{_razãoSocial} ".ToUpper()).Append("CNPJ: ").Bold().Append($"{_cnpj}")
                 .AppendLine("ENDEREÇO: ").Bold().Append($"RUA FREI VITAL DE FRESCAROLO, 535".ToUpper())
                 .AppendLine("CEP: ").Bold().Append($"05569-030 ").Append("BAIRRO: ").Bold().Append($"JD. JOÃO XXIII ".ToUpper()).Append("CIDADE: ").Bold().Append($"SÃO PAULO".ToUpper())
-                .AppendLine("REPRESENTADA POR: ").Bold().Append($"JONNANTÃ HARLEY MACIEL DE ALMEIDA ".ToUpper()).Append("CPF: ").Bold().Append($"339.398.408-07");
+                .AppendLine("REPRESENTADA POR: ").Bold().Append($"{_representante} ".ToUpper()).Append("CPF: ").Bold().Append($"{_cpf}");
 
             var t3 = document.InsertParagraph().InsertTableBeforeSelf(1, 1);
 
@@ -297,7 +302,7 @@ namespace ContratosMVVM.Services
             tAssinaturas.Rows[0].Cells[0].Paragraphs[0].AppendLine("___________________________").AppendLine($"{_cliente.Representante}").Bold().AppendLine($"{_cliente.RazãoSocial}").Alignment = Alignment.center;
 
             tAssinaturas.Rows[0].Cells[1].VerticalAlignment = VerticalAlignment.Center;
-            tAssinaturas.Rows[0].Cells[1].Paragraphs[0].AppendPicture(assinaturaPicture).AppendLine($"Jonnantã Harley Maciel de Almeida").Bold().AppendLine($"AMBISOF DISTRIBUIDORA TECNOLOGICA LTDA").Alignment = Alignment.center;
+            tAssinaturas.Rows[0].Cells[1].Paragraphs[0].AppendPicture(assinaturaPicture).AppendLine($"{_representante}").Bold().AppendLine($"{_razãoSocial}").Alignment = Alignment.center;
 
             tAssinaturas.Rows[1].Cells[0].VerticalAlignment = VerticalAlignment.Center;
             tAssinaturas.Rows[1].Cells[0].Paragraphs[0].AppendLine("___________________________").AppendLine($"1ª Testemunha").Italic().Alignment = Alignment.center;
